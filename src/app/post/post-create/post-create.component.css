@@ -1,0 +1,19 @@
+.example-form {
+    width: 93%;
+  
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  
+  .example-button-row button {
+    margin-right: 8px;
+  }
+  
+  .example-disabled {
+    display: inline-block;
+  }

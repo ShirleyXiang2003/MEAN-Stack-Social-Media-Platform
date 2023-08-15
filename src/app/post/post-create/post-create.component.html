@@ -1,6 +1,21 @@
-<h2>post-create</h2>
+<mat-card>
+  <form
+    class="example-form" (submit)="addPost(PostCreateForm)" #PostCreateForm="ngForm">
+    <mat-form-field class="example-full-width">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="title part" name="title" ngModel required />
+    </mat-form-field>
 
-<textarea rows ="10" [(ngModel)]="enterValue"></textarea>
-<hr>
-<button (click)="fakeClick()">submit</button>
-<p>{{content}}</p>
+    <mat-form-field class="example-full-width">
+      <mat-label>Content</mat-label>
+      <textarea
+        matInput
+        placeholder="content part"
+        name="content"
+        ngModel
+      ></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit">Submit</button>
+  </form>
+</mat-card>

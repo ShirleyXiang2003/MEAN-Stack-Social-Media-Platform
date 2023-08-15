@@ -1,21 +1,22 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { PostService } from '../post.service';
 
 @Component({
-    selector: 'post-create',
-    templateUrl: './post-create.component.html',
-
+  selector: 'app-post-create',
+  templateUrl: './post-create.component.html',
+  styleUrls: ['./post-create.component.css']
 })
-
 export class PostCreateComponent {
-    content = 'hi';
-    enterValue = 'Demo entered value';
-    clickMe(){
-        console.log('hi I am here.');
-    }
+  createPostServiceInstance: PostService;
+  postItem = {};    /*这里就相当于是一个list，把所有东西装起来*/
+  addPost(form: NgForm){
+    this.postItem = {title:form.value.title, content:form.value.content};
+    console.log(this.postItem);
+    this.createPostServiceInstance.addItems(form.value.title, form.value.content);
+  }
 
-    fakeClick(){
-        console.log('I am a fake click');
-        this.content = 'Now I am hello not hi.';
-        this.enterValue = 'Value changed.';
-    }
+  constructor(postService : PostService){
+    this.createPostServiceInstance = postService;
+  }
 }
