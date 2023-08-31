@@ -1,5 +1,9 @@
-const http = require("http");   // 拿到这个http
-const server = http.createServer((req, res) => ({
-    res.end("response from backend");
-}
-);
+const http = require("http");   // 导入http模块
+
+const app = require("./backend/app");       //导入express应用
+const port = 3000;
+
+app.set("port", port);
+const server = http.createServer(app); 
+
+server.listen(port);
