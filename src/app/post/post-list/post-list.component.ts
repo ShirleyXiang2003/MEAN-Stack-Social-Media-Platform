@@ -9,12 +9,7 @@ import { PostService } from '../post.service';
 })
 export class PostListComponent implements OnInit{
     listPostServiceInstance: PostService;
-     posts: PostModel[] = [
-      // { title: 'first title', content: 'first content' },
-      // { title: 'second title', content: 'second content' },
-      // { title: 'third title', content: 'third content' },
-    
-    ];
+     posts: PostModel[] = [];
 
     constructor(postService : PostService){
       this.listPostServiceInstance = postService;
