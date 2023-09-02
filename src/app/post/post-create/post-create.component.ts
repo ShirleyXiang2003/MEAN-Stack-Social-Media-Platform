@@ -7,9 +7,11 @@ import { PostService } from '../post.service';
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.css']
 })
+
 export class PostCreateComponent {
   createPostServiceInstance: PostService;
   postItem = {};    /*这里就相当于是一个list，把所有东西装起来*/
+
   addPost(form: NgForm){
     this.postItem = {title:form.value.title, content:form.value.content};
     console.log(this.postItem);

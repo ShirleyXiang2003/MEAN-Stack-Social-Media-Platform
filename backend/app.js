@@ -17,7 +17,7 @@ app.use((req, res, next) => {       // CORS中间件
 })
 
 // step 1: which methods? GET? POST? DELETE? PUT?
-//GET
+//GET 请求处理
 app.get("/api/posts", (req, res)=> {
     // step 2: console.log(req) is fine, since we don't have db yet
     console.log("Received GET request", req);
@@ -38,6 +38,25 @@ app.get("/api/posts", (req, res)=> {
         message: "GET request successful",
         body: posts,
     });
+});
+
+//POST 请求处理
+app.post("/api/posts", (req, res)=> {
+    // step 2: console.log(req) is fine, since we don't have db yet
+    console.log("Received POST request", req.body);
+
+    const title = req.body.title;
+    const content = req.body.content;
+
+    const responseData = [
+        message = "POST request success",
+        data = {
+            title: title,
+            content: content,
+        },
+    ];
+    // step 3: how to add response?
+    res.json(responseData);
 });
 
 app.use("/api/posts",(req, res, next) => {      // 定义一个路由处理程序
