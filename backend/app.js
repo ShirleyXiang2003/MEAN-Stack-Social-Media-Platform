@@ -1,6 +1,9 @@
 const express = require("express");     // 导入express模块
 
+const bodyParser = require("body-parser");      // 导入body-parser模块
+
 const app = express();    // 创建 web 服务器
+app.use(bodyParser.json());     // 使用body-parser中间件来解析JSON格式的请求体数据
 
 app.use((req, res, next) => {       // CORS中间件,所有传输到3000端口的东西都要做这个处理
     res.setHeader("Access-Control-Allow-Origin", "*");      // 设置响应头，*代表来自任何源的跨域请求
