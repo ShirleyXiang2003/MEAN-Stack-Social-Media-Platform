@@ -37,7 +37,7 @@ app.get("/api/posts", (req, res)=> {
         },
     ];
     // step 3: how to add response?
-    res.json({
+    res.status(202).json({
         message: "GET request successful",
         body: posts,
     });
@@ -59,7 +59,7 @@ app.post("/api/posts", (req, res) => {
         },
     };
     // step 3: how to add response?
-    res.json(responseData);
+    res.status(201).json(responseData);
 });
 
 app.use("/api/posts",(req, res, next) => {      // 定义一个路由处理程序
