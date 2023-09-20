@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { PostModel } from "./post.model";
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+import { map } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root' })
 export class PostService{
@@ -12,12 +13,23 @@ export class PostService{
     getItems(){
         // return [...this.items];
         this.http
-            .get<{ message : String; body : PostModel[]}>(     
+            .get<{ message : string; body : any}>(     
                 'http://localhost:3000/api/posts'       
+            )
+            .pipe(
+                map((postData)=>{
+                    return postData.body.map((post: { title: any; content: any; _id: any; })=> {
+                        return { 
+                            title: post.title, 
+                            content: post.content, 
+                            id: post._id,
+                        };
+                    });
+                })
             )
             .subscribe((postData)=> {
                 console.log(postData);
-                this.items=postData.body;
+                this.items=postData;
                 this.itemsUpdated.next([...this.items]);
             });
 
@@ -29,11 +41,37 @@ export class PostService{
 
     addItems(titleInstance: string, contentInstance: string){
         const instance: PostModel = {
+            id: '1',
             title: titleInstance, 
             content: contentInstance
         };
-        this.items.push(instance);
-        this.itemsUpdated.next([...this.items]);
+
+        this.http
+            .post<{ message: string; postId: string }>(
+                'http://localhost:3000/api/posts',
+                instance
+            )
+            .subscribe((responseData) => {
+                console.log(responseData);
+                const postId = responseData.postId;
+                instance.id = postId;
+                this.items.push(instance); // [title: "title", content:"content"]
+                this.itemsUpdated.next([...this.items]);
+                console.log('form add Item', this.items);
+            });
+            
+    }
+
+    //postId 来确认要删除掉post
+    deleteItem(postId: string) {
+        this.http
+            .delete('http://localhost:3000/api/posts/' + postId)
+            .subscribe((responseData)=> {
+                console.log(responseData);
+                const updatedPosts = this.items.filter((post) => post.id !== postId);
+                this.items = updatedPosts;
+                this.itemsUpdated.next([...this.items]);
+            });
     }
 }
 

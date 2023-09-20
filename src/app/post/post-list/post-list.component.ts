@@ -14,11 +14,17 @@ export class PostListComponent implements OnInit{
     constructor(postService : PostService){
       this.listPostServiceInstance = postService;
     }
-  ngOnInit(): void {
-    this.listPostServiceInstance.getItems();
-    this.listPostServiceInstance.getItemUpdatedListener().subscribe((newPosts: PostModel[]) =>{
-      this.posts = newPosts;
-    });    // 如果有任何变化，获取它
-  }
+
+    onDelete(postId: string) {
+      console.log(postId);
+      this.listPostServiceInstance.deleteItem(postId);
+    }
+
+    ngOnInit(): void {
+      this.listPostServiceInstance.getItems();
+      this.listPostServiceInstance.getItemUpdatedListener().subscribe((newPosts: PostModel[]) =>{
+        this.posts = newPosts;
+      });    // 如果有任何变化，获取它
+    }
 
 }

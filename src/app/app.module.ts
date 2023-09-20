@@ -14,6 +14,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { PostListComponent } from './post/post-list/post-list.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {HttpClientModule} from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { PostUpdateComponent } from './post/post-update/post-update.component';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import {HttpClientModule} from '@angular/common/http';
     AppComponent,
     HeaderComponent,
     PostCreateComponent,
-    PostListComponent   //自动加的
+    PostListComponent,
+    PostUpdateComponent,
 
   ],
   imports: [
@@ -35,6 +38,7 @@ import {HttpClientModule} from '@angular/common/http';
     MatButtonModule,
     MatExpansionModule,
     HttpClientModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
