@@ -33,7 +33,7 @@ app.use((req, res, next) => {       // CORS中间件,所有传输到3000端口�
 })
 //===============================================================================================
 //GET 请求处理
-app.get("/api/posts", (req, res, next)=> {
+app.get("/api/posts/", (req, res, next)=> {
     Post.find().then((responseData) => {
         console.log("Received GET request", responseData);
         res.json({
@@ -62,30 +62,17 @@ app.post("/api/posts", (req, res, next) => {
 
 //===============================================================================================
 // PUT 请求处理
-// app.put("/api/posts/:id", (req, res, next) =>{
-//     const postId = req.params.id;
-//     const updatedTitle = req.body.title;
-//     const updatedContent = req.body.content;
-
-//     Post.findById(postId)
-//         .then(post => {
-//             if (!post) {
-//                 return res.status(404).json({ message: "Post not found" });
-//             }
-
-//             post.title = updatedTitle;
-//             post.content = updatedContent;
-
-//             // 保存更新后的到数据库
-//             return post.save();
-//         })
-//         .then(updatedPost => {
-//             res.status(200).json({ message: "Post updated successfully", updatedPost });
-//         })
-//         .catch(error => {
-//             res.json({ message: "Error updating post", error });
-//         });
-// })
+app.put("/api/posts/:id", (req, res, next) => {
+  const post = new Post({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content,
+  });
+  Post.updateOne({ _id: req.params.id }, post).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Update successfully!" });
+  });
+});
 
 //===============================================================================================
 // DELETE 请求处理
@@ -98,6 +85,17 @@ app.delete("/api/posts/:id", (req, res, next)=>{
     .catch((error) => {     //  如果没有删除成功
         console.log("error", error);
     })
+});
+
+// 取一个
+app.get("/api/posts/:id", (req, res, next) => {
+  Post.findById(req.params.id).then((post) => {
+    if (post) {
+      res.status(201).json(post);
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
+  });
 });
 
 module.exports = app;

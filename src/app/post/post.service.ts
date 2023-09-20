@@ -14,7 +14,7 @@ export class PostService{
         // return [...this.items];
         this.http
             .get<{ message : string; body : any}>(     
-                'http://localhost:3000/api/posts'       
+                'http://localhost:3000/api/posts/'       
             )
             .pipe(
                 map((postData)=>{
@@ -41,14 +41,14 @@ export class PostService{
 
     addItems(titleInstance: string, contentInstance: string){
         const instance: PostModel = {
-            id: '1',
+            id: '',
             title: titleInstance, 
             content: contentInstance
         };
 
         this.http
             .post<{ message: string; postId: string }>(
-                'http://localhost:3000/api/posts',
+                'http://localhost:3000/api/posts/',
                 instance
             )
             .subscribe((responseData) => {
@@ -72,6 +72,26 @@ export class PostService{
                 this.items = updatedPosts;
                 this.itemsUpdated.next([...this.items]);
             });
+    }
+
+    getItem(id: string){
+        return this.http.get<{ _id: String, title: String, content: string}>(
+            'http://localhost:3000/api/posts/' + id
+        );
+    }
+
+    updateItem(id: string, title: string, content: string) {
+        const post: PostModel = { id: id, title: title, content: content };
+        this.http
+          .put('http://localhost:3000/api/posts/' + id, post)
+          .subscribe((response) => {
+            console.log(response);
+            const updatedItems = [...this.items];
+            const oldItemIndex = updatedItems.findIndex((p) => p.id === post.id);
+            updatedItems[oldItemIndex] = post;      // 新的post替换老的post
+            this.items = updatedItems;
+            this.itemsUpdated.next([...this.items]);        //更新
+        });
     }
 }
 
