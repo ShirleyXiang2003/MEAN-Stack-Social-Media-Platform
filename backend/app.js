@@ -8,7 +8,7 @@ app.use(bodyParser.json());     // 使用body-parser中间件来解析JSON格式
 
 mongoose
   .connect(
-    "mongodb+srv://xiangzhushan:3evfbpP9xp3dtiIf@demoapp.y3oiu53.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://xiangzhushan:<password>@demoapp.y3oiu53.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("connect successfully");
