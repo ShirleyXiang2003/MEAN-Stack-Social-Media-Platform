@@ -18,7 +18,7 @@ export class PostService{
             )
             .pipe(
                 map((postData)=>{
-                    return postData.body.map((post: { title: any; content: any; _id: any; imagePath: any})=> {
+                    return postData.body.map((post: { title: any; content: any; _id: any; imagePath: any; })=> {
                         return { 
                             title: post.title, 
                             content: post.content, 
