@@ -17,3 +17,12 @@
   .example-disabled {
     display: inline-block;
   }
+
+  .image-upload-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  input[type="file"] {
+    visibility: hidden;
+  }

@@ -16,18 +16,21 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { PostUpdateComponent } from './post/post-update/post-update.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 @NgModule({
-  declarations: [
+  declarations: [   // 自己定义的放在这里
     AppComponent,
     HeaderComponent,
     PostCreateComponent,
     PostListComponent,
     PostUpdateComponent,
+    SignupComponent,
 
   ],
-  imports: [
+  imports: [    // 写好的包放在这里
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -39,6 +42,7 @@ import { PostUpdateComponent } from './post/post-update/post-update.component';
     MatExpansionModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

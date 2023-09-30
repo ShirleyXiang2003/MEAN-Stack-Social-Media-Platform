@@ -1,19 +1,29 @@
 <mat-card>
   <form
-    class="example-form" (submit)="addPost(PostCreateForm)" #PostCreateForm="ngForm">
+    [formGroup]="form"
+    class="example-form" (submit)="addPost()">
     <mat-form-field class="example-full-width">
       <mat-label>Title</mat-label>
-      <input matInput placeholder="title part" name="title" ngModel required />
+      <input matInput placeholder="title part" formControlName="title"/>
     </mat-form-field>
+
+    <button 
+    mat-stroked-button 
+    class="image-upload-button" 
+    type="button"
+    (click)="imageUploader.click()">
+    Upload Image</button>
+    <input type="file" #imageUploader (change)="uploadImage($event)">
+    
+    <div class="image-preview" *ngIf="imagePreview && imagePreview!== ''">
+      <img [src] ="imagePreview" [alt]="form.value.title">
+    </div>
 
     <mat-form-field class="example-full-width">
       <mat-label>Content</mat-label>
       <textarea
         matInput
-        placeholder="content part"
-        name="content"
-        ngModel
-      ></textarea>
+        placeholder="content part" formControlName="content"></textarea>
     </mat-form-field>
 
     <button mat-raised-button color="accent" type="submit">Submit</button>

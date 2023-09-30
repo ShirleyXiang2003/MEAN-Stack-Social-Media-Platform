@@ -18,11 +18,12 @@ export class PostService{
             )
             .pipe(
                 map((postData)=>{
-                    return postData.body.map((post: { title: any; content: any; _id: any; })=> {
+                    return postData.body.map((post: { title: any; content: any; _id: any; imagePath: any})=> {
                         return { 
                             title: post.title, 
                             content: post.content, 
                             id: post._id,
+                            imagePath: post.imagePath,
                         };
                     });
                 })
@@ -39,23 +40,26 @@ export class PostService{
         return this.itemsUpdated.asObservable();    // 监听到 state 1 -> state 2
     }
 
-    addItems(titleInstance: string, contentInstance: string){
-        const instance: PostModel = {
-            id: '',
-            title: titleInstance, 
-            content: contentInstance
-        };
+    addItems(titleInstance: string, contentInstance: string, imageInstance: File){
+        const instance = new FormData();
+        instance.append('title', titleInstance);
+        instance.append('content', contentInstance);
+        instance.append('image', imageInstance, titleInstance);
 
         this.http
-            .post<{ message: string; postId: string }>(
+            .post<{ message: string; post: PostModel }>(
                 'http://localhost:3000/api/posts/',
                 instance
             )
             .subscribe((responseData) => {
-                console.log(responseData);
-                const postId = responseData.postId;
-                instance.id = postId;
-                this.items.push(instance); // [title: "title", content:"content"]
+                const newItem: PostModel= {
+                    id: responseData.post.id,
+                    title: titleInstance,
+                    content: contentInstance,
+                    imagePath: responseData.post.imagePath,
+                }
+
+                this.items.push(newItem); // [title: "title", content:"content"]
                 this.itemsUpdated.next([...this.items]);
                 console.log('form add Item', this.items);
             });

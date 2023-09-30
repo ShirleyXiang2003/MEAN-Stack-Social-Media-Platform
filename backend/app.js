@@ -2,13 +2,23 @@ const express = require("express");     // 导入express模块
 const bodyParser = require("body-parser");      // 导入body-parser模块
 const mongoose = require("mongoose");       // 导入mongoose模块
 const Post = require("./models/post");
+const multer = require("multer");
+const path = require("path");
+const User = require("./models/user");
+const bcrypt = require("bcrypt");
+
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/ipg": "jpg",
+};
 
 const app = express();    // 创建 web 服务器
 app.use(bodyParser.json());     // 使用body-parser中间件来解析JSON格式的请求体数据
 
 mongoose
   .connect(
-    "mongodb+srv://xiangzhushan:<password>@demoapp.y3oiu53.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://xiangzhushan:3evfbpP9xp3dtiIf@demoapp.y3oiu53.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("connect successfully");
@@ -16,6 +26,24 @@ mongoose
   .catch(() => {
     console.log("connect failed");
   });
+
+app.use("/images", express.static(path.join("backend/images")));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "backend/images");   // 一旦有文件来，就存在images里面
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");  // 用横线分隔开
+    const extension = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + extension);
+  },
+})
 
 //===============================================================================================
 app.use((req, res, next) => {       // CORS中间件,所有传输到3000端口的东西都要做这个处理
@@ -45,17 +73,28 @@ app.get("/api/posts/", (req, res, next)=> {
 
 //===============================================================================================
 // POST 请求处理
-app.post("/api/posts", (req, res, next) => {
+app.post("/api/posts", 
+multer({ storage: storage}).single("image"), 
+(req, res, next) => {
     // 现在你可以访问req.body来获取POST请求中的数据
     console.log("Received POST request", req.body);
+    const url = req.protocol + "://" + req.get("host");
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
+        imagePath: url + "/images/" + req.file.filename,
+        // http://localhost:3000/images-time.png
     });
     post.save().then((result) => {
-    res.status(201).json({
+        console.log(result);
+        res.status(201).json({
           message: "success v1",
-          postId: result._id,
+          pos: {
+            id: result._id,
+            title: result.title,
+            content: result.content,
+            imagePath: result.imagePath,
+          }
         });
     });
 });
@@ -95,6 +134,30 @@ app.get("/api/posts/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Post not found" });
     }
+  });
+});
+
+app.post("/api/user/signup", (req, res, next) => {
+  bcrypt.hash(req.body.password, 10).then((hash) =>{
+    console.log(hash);
+    const user = new User({
+      email: req.body.email,
+      password: hash,
+    });
+
+    user
+      .save()
+      .then((result) => {
+        res.status(201).json({
+          message: "User created",
+          result: result,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          error: err,
+        });
+      });
   });
 });
 
