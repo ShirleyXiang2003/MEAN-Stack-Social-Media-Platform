@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PostUpdateComponent } from './post/post-update/post-update.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './auth/signup/signup.component';
+import { LoginComponent } from './auth/login/login.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SignupComponent } from './auth/signup/signup.component';
     PostListComponent,
     PostUpdateComponent,
     SignupComponent,
+    LoginComponent,
 
   ],
   imports: [    // 写好的包放在这里

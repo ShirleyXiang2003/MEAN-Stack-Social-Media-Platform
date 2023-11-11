@@ -79,13 +79,15 @@ export class PostService{
     }
 
     getItem(id: string){
-        return this.http.get<{ _id: String, title: String, content: string}>(
+        return this.http.get<{
+          imagePath: string; _id: String, title: String, content: string
+}>(
             'http://localhost:3000/api/posts/' + id
         );
     }
 
-    updateItem(id: string, title: string, content: string) {
-        const post: PostModel = { id: id, title: title, content: content };
+    updateItem(id: string, title: string, content: string, imageInstance?: File) {
+        const post: PostModel = { id: id, title: title, content: content};
         this.http
           .put('http://localhost:3000/api/posts/' + id, post)
           .subscribe((response) => {

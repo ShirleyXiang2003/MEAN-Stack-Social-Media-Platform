@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { PostModel } from '../post.model';
 import { PostService } from '../post.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -14,6 +13,8 @@ export class PostUpdateComponent implements OnInit {
   updatePostServiceInstance: PostService;
   private postId: string;
   form: FormGroup;
+  imagePreviewBefore: string;
+  imagePreviewAfter: string;
 
   constructor(postService: PostService, public route: ActivatedRoute) {
     this.updatePostServiceInstance = postService;
@@ -37,6 +38,8 @@ export class PostUpdateComponent implements OnInit {
               title: postData.title,
               content: postData.content,
             });
+            // 设置 imagePreview 以显示之前的图片
+            this.imagePreviewBefore = postData.imagePath;
         });
       }
     });
@@ -51,6 +54,20 @@ export class PostUpdateComponent implements OnInit {
     );
     console.log('updatePost successfully', this.form);
     this.form.reset();
+  }
+
+  uploadImage(event: Event) {   // 这个是一个js的特性
+    const file = (event.target as HTMLInputElement).files[0];
+    if (file) {
+      this.form.patchValue({image: file});    // 把前面传进来的图片绑到form里去
+      this.form.get('image').updateValueAndValidity();
+      const reader = new FileReader();
+      reader.onload = () =>{
+        this.imagePreviewAfter = reader.result as string;
+        console.log(this.imagePreviewAfter);
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
 }

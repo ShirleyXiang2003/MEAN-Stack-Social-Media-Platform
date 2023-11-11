@@ -8,7 +8,27 @@
         <mat-label>Title</mat-label>
         <input matInput placeholder="title part" formControlName="title"/>
       </mat-form-field>
-  
+
+      <!-- 显示已有的图片 -->
+      <div *ngIf="imagePreviewBefore" class="image-preview">
+        <img [src]="imagePreviewBefore" [alt]="form.value.title" />
+      </div>
+
+      <!-- 更新图片 -->
+      <button 
+      mat-stroked-button 
+      class="image-upload-button" 
+      type="button"
+      (click)="imageUploader.click()">
+      Upload Image</button>
+      <input type="file" #imageUploader (change)="uploadImage($event)">
+
+      <!-- 显示更新图片 -->
+
+      <div class="image-preview" *ngIf="imagePreviewAfter && imagePreviewAfter!== ''">
+        <img [src] ="imagePreviewAfter" [alt]="form.value.title">
+      </div>
+
       <mat-form-field class="example-full-width">
         <mat-label>Content</mat-label>
         <textarea

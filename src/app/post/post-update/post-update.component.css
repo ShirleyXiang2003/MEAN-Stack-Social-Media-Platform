@@ -6,16 +6,31 @@
     margin: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
-  }
+}
   
-  .example-full-width {
-    width: 100%;
-  }
+.example-full-width {
+  width: 100%;
+}
   
-  .example-button-row button {
-    margin-right: 8px;
-  }
-  
-  .example-disabled {
-    display: inline-block;
-  }
+.example-button-row button {
+  margin-right: 8px;
+}
+
+.example-disabled {
+  display: inline-block;
+}
+
+.image-upload-button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+.image-preview img {
+  height: 100%;
+  max-width: 300px;
+}
+
