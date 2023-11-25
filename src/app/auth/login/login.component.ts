@@ -8,9 +8,11 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  isLoading = false;
   constructor(private authService: AuthService) {}
 
   onLogin(form: NgForm) {
+    this.isLoading = true;
     this.authService.login(form.value.email, form.value.password);
   }
 }

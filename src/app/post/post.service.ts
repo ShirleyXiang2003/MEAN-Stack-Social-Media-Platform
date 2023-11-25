@@ -3,13 +3,14 @@ import { PostModel } from "./post.model";
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map } from 'rxjs/operators';
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({providedIn: 'root' })
 export class PostService{
     private items: PostModel[] = [];
     private itemsUpdated = new Subject<PostModel[]>();      //如果PostModel有变化的话，items也跟着变
 
-    constructor(private http : HttpClient) {}       // 创建了一个http的instance
+    constructor(private http : HttpClient, private authService: AuthService) {}       // 创建了一个http的instance
     getItems(){
         // return [...this.items];
         this.http

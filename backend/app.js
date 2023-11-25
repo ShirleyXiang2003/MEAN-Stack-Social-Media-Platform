@@ -24,7 +24,7 @@ app.use((req, res, next) => {       // CORS中间件,所有传输到3000端口�
     res.setHeader("Access-Control-Allow-Origin", "*");      // 设置响应头，*代表来自任何源的跨域请求
     res.setHeader(
         "Access-Control-Allow-Headers",
-        "Origin, X-Request-Width, Content-Type, Accept"
+        "Origin, X-Request-Width, Content-Type, Accept, Authorization"
     );
 
     res.setHeader(

@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs: Subscription;
   constructor(private authService: AuthService) {}
   ngOnInit() {
+    this.userIsAuthenticated = this.authService.getisAuth();
     this.authListenerSubs = this.authService
     .getAuthStatusListener()
     .subscribe((isAuthenticated) => {
@@ -21,5 +22,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
+  }
+  onLogOut() {
+    this.authService.logOut();
   }
 }

@@ -29,6 +29,8 @@ router.post("/signup", (req, res, next) => {
   });
 });
 
+// ==================================================================================
+
 router.post("/login", (req, res, next) =>{
   let fetchedUser;
   User.findOne({ email: req.body.email}).then((user) =>{
@@ -55,7 +57,7 @@ router.post("/login", (req, res, next) =>{
       { expiresIn: "1h"}
     );
     console.log(token);
-    res.status(200).json({ token: token});
+    res.status(200).json({ token: token, duration: 3600});
   })
   .catch((err) => {   //  如果还有什么错误的话
     return res.status(401).json({
